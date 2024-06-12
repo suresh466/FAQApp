@@ -1,0 +1,43 @@
+﻿@model FaqViewModel
+
+<div class="row">
+    <div class="col-3">
+        <div class="list-group">
+            @foreach (var category in Model.Categories)
+            {
+                <a href="@Url.Action("Index", new { topicId = Model.CurrentTopicId, categoryId = category.Id })" class="list-group-item list-group-item-action @(Model.CurrentCategoryId == category.Id ? "active" : "")">
+                    @category.Name
+                </a>
+            }
+        </div>
+    </div>
+    <div class="col-9">
+        <div class="list-group">
+            @foreach (var faq in Model.Faqs)
+            {
+                <div class="list-group-item">
+                    <h5 class="mb-1">@faq.Question</h5>
+                    <p class="mb-1">@faq.Answer</p>
+                    <small class="text-muted">
+                        @faq.Topic.Name | @faq.Category.Name
+                    </small>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.list-group-item').on('click', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                if (!$this.hasClass('active')) {
+                    $this.addClass('active').siblings().removeClass('active');
+                    window.location = $this.attr('href');
+                }
+            });
+        });
+    </script>
+}
